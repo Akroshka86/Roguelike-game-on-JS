@@ -69,12 +69,13 @@
     if (this.player && this.player.hp <= 0) {
       this.gameOver = true;
       $(window).off('keydown.rogue');
-      alert('Вы погибли! Игра окончена.');
+      this.showMenu('Вы погибли! Попробуете ещё раз?');
+      return;
     }
     if (this.enemies.length === 0) {
       this.gameOver = true;
       $(window).off('keydown.rogue');
-      alert('Победа! Все противники повержены.');
+      this.showMenu('Победа! Все противники повержены.');
       return;
     }
   };

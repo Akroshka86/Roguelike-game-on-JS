@@ -42,8 +42,8 @@
 
   // Вызывается после new Game()
   Game.prototype.init = function () {
-
-    this.$field = $('.field');
+    $(window).off('keydown.rogue');
+    this.$field = this.$field || $('.field');
     this.$field.css({ width: this.W * this.T + 'px', height: this.H * this.T + 'px' });
 
     this.generateAllWalls();

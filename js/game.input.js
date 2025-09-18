@@ -12,13 +12,13 @@
       var low = k.toLowerCase();
 
       // Перемещение
-      if (low === 'w' || low === 'a' || low === 's' || low === 'd') {
+      if (low === 'w' || low === 'a' || low === 's' || low === 'd' || low === 'ц' || low === 'ф' || low === 'ы' || low === 'в') {
         e.preventDefault();
         var dx = 0, dy = 0;
-        if (low === 'w') dy = -1;
-        else if (low === 'a') dx = -1;
-        else if (low === 's') dy = 1;
-        else if (low === 'd') dx = 1;
+        if (low === 'w' || low === 'ц') dy = -1;
+        else if (low === 'a' || low === 'ф') dx = -1;
+        else if (low === 's' || low === 'ы') dy = 1;
+        else if (low === 'd' || low === 'в') dx = 1;
         if (self.tryMovePlayer(dx, dy)) {
           self.enemyTurn();
         }

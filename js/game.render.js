@@ -46,4 +46,26 @@
       $f.append($p);
     }
   };
+
+  Game.prototype.showMenu = function (message) {
+    $('#menuMessage').text(message || 'Нажмите «Начать игру»');
+    $('.field-box').hide();
+    $('.title').hide();
+    $('#menu').fadeIn(500);
+  };
+  Game.prototype.hideMenu = function () {
+    $('#menu').fadeOut(500);
+    $('.field-box').show();
+    $('.title').show();
+  };
+  Game.prototype.bindMenu = function () {
+    var self = this;
+    $('#btnStart').off('click').on('click', function () {
+      self.hideMenu();
+      $(window).off('keydown.rogue');
+      self.init();
+    });
+  };
+
+
 })(window, jQuery);

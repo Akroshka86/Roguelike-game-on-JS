@@ -26,13 +26,22 @@
 
 </head>
 <body>
-  <h1>Игровое поле</h1>
+  <h1 class="title">Игровое поле</h1>
   <div class="field-box"><div class="field"></div></div>
   <div class="cl"></div>
 
+  <div id="menu" class="menu-overlay" style="display:none;">
+    <div class="menu-card">
+      <h1>РОГАЛИК</h1>
+      <p id="menuMessage">Нажмите «Начать игру»</p>
+      <button id="btnStart">Начать игру</button>
+    </div>
+  </div>
+
   <script>
     var game = new Game();
-    game.init();
+    game.bindMenu();
+    game.showMenu('Нажмите «Начать игру»');
   </script>
 </body>
 </html>
