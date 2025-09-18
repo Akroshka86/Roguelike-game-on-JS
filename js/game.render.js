@@ -61,6 +61,8 @@
   Game.prototype.bindMenu = function () {
     var self = this;
     $('#btnStart').off('click').on('click', function () {
+      var diff = $('input[name="diff"]:checked').val() || 'normal';
+      self.setDifficulty(diff);
       self.hideMenu();
       $(window).off('keydown.rogue');
       self.init();

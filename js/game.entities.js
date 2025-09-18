@@ -36,16 +36,18 @@
 // Генерация объектов на карте
   Game.prototype.placeItems = function () {
     var i, pos;
+    var swords = this.config ? this.config.swords : 2;
+    var potions = this.config ? this.config.potions : 10;
 
     // Спавн 2 мечей
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < swords; i++) {
       pos = this.randomEmptyCell(); if (!pos) break;
       this.items.push({ type: 'SW', x: pos.x, y: pos.y });
       this.occ[keyXY(pos.x, pos.y, this.W)] = true;
     }
 
     // Спавн 10 зелий
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < potions; i++) {
       pos = this.randomEmptyCell(); if (!pos) break;
       this.items.push({ type: 'HP', x: pos.x, y: pos.y });
       this.occ[keyXY(pos.x, pos.y, this.W)] = true;
@@ -63,10 +65,12 @@
   // Спавн 10 противников
   Game.prototype.placeEnemies = function () {
     var i, pos;
-    for (i = 0; i < 10; i++) {
-      pos = this.randomEmptyCell();
-      if (!pos) break;
-      var enemy = { id: i, x: pos.x, y: pos.y, hp: 30, maxHp: 30, atk: 5 };
+    var count = this.config ? this.config.enemies : 10;
+    var hp    = this.config ? this.config.enemyHp : 30;
+    var atk   = this.config ? this.config.enemyAtk : 5;
+    for (i = 0; i < count; i++) {
+      pos = this.randomEmptyCell(); if (!pos) break;
+      var enemy = { id: i, x: pos.x, y: pos.y, hp: hp, maxHp: hp, atk: atk };
       this.enemies.push(enemy);
       this.occ[keyXY(pos.x, pos.y, this.W)] = true;
     }
