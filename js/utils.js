@@ -8,11 +8,21 @@
   function keyXY(x, y, W) { return (y * W + x).toString(); }
 
   // Функция для выбора случайных чисел из диапазона (используем для выбора случайных коридоров)
-  function pickDistinct(k, min, max) {
-    var set = {}, arr = [], tries = 0, limit = 1000, v;
-    while (arr.length < k && tries++ < limit) { v = randInt(min, max); if (!set[v]) { set[v] = true; arr.push(v); } }
-    return arr;
+  function pickDistinct(k, min, max, minGap) {
+    var chosen = [], tries = 0, limit = 1000;
+    while (chosen.length < k && tries++ < limit) {
+      var v = randInt(min, max);
+      var flag = true;
+      for (var i = 0; i < chosen.length; i++) {
+        if (Math.abs(chosen[i] - v) <= minGap) { flag = false; break; }
+      }
+      if (flag) chosen.push(v);
+    }
+    chosen.sort(function(a,b){ return a-b; });
+    return chosen;
   }
+
+
 
   window.randInt = randInt;
   window.keyXY = keyXY;

@@ -64,8 +64,8 @@
     this.$field.css({ width: this.W * this.T + 'px', height: this.H * this.T + 'px' });
 
     this.generateAllWalls();
-    this.generateRooms();
     this.generateCorridors();
+    this.generateRooms();
     this.placeItems();
     this.placePlayer();
     this.placeEnemies();

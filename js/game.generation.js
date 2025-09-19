@@ -11,10 +11,17 @@
   };
 
   // Проверка, чтобы комнаты не накладывались друг на друга
-  Game.prototype._roomOverlaps = function (x, y, w, h) {
-    var i, j;
-    for (j = y; j < y + h; j++) for (i = x; i < x + w; i++) {
-      if (this.grid[j][i] !== 'W') return true;
+  Game.prototype._roomOverlaps = function (x, y, w, h, pad) {
+    pad = (pad == null) ? 1 : pad;
+    var x0 = x - pad, y0 = y - pad;
+    var x1 = x + w - 1 + pad, y1 = y + h - 1 + pad;
+
+    for (var i = 0; i < this.rooms.length; i++) {
+      var r = this.rooms[i];
+      var rx0 = r.x, ry0 = r.y;
+      var rx1 = r.x + r.w - 1, ry1 = r.y + r.h - 1;
+      var separated = (x1 < rx0) || (rx1 < x0) || (y1 < ry0) || (ry1 < y0);
+      if (!separated) return true;
     }
     return false;
   };
@@ -51,14 +58,30 @@
     }
   };
 
+  Game.prototype._roomTouchesCorridor = function (x, y, w, h) {
+    var i, xc, yc;
+    for (i = 0; i < this.vertCorridors.length; i++) {
+      xc = this.vertCorridors[i];
+      if (xc >= x && xc <= x + w - 1) return true;
+    }
+    for (i = 0; i < this.horzCorridors.length; i++) {
+      yc = this.horzCorridors[i];
+      if (yc >= y && yc <= y + h - 1) return true;
+    }
+    return false;
+  };
+
   // Генерация комнат
   Game.prototype.generateRooms = function () {
-    var want = randInt(5, 10), placed = 0, attempts = 200;
+    var want = randInt(5, 10), placed = 0, attempts = 600;
     while (placed < want && attempts-- > 0) {
       var w = randInt(3, 8), h = randInt(3, 8);
       var x = randInt(1, this.W - 1 - w), y = randInt(1, this.H - 1 - h);
+
       if (!this._roomFits(x, y, w, h)) continue;
-      if (this._roomOverlaps(x, y, w, h)) continue;
+      if (this._roomOverlaps(x, y, w, h, 1)) continue;
+      if (!this._roomTouchesCorridor(x, y, w, h)) continue;
+
       this._carveRoom(x, y, w, h);
       placed++;
     }
@@ -71,7 +94,8 @@
   // Выбирает где будет находится проход и сколько их будет
   Game.prototype.generateCorridors = function () {
     var vCount = randInt(3, 5), hCount = randInt(3, 5);
-    var xs = pickDistinct(vCount, 1, this.W - 2), ys = pickDistinct(hCount, 1, this.H - 2);
+    var xs = pickDistinct(vCount, 1, this.W - 2, 1);
+    var ys = pickDistinct(hCount, 1, this.H - 2, 1);
     for (var i = 0; i < xs.length; i++) this.carveVertical(xs[i]);
     for (var j = 0; j < ys.length; j++) this.carveHorizontal(ys[j]);
     this.vertCorridors = xs; this.horzCorridors = ys;
